@@ -1,0 +1,141 @@
+import { Callout } from 'nextra/components'
+
+# Console
+A comprehensive logging package for Luau, providing configurable logging levels, formatted output, ANSI color support (won't work in Roblox),
+timestamps, and traceback integration - it's intention is to make what limited control we have over the output, easier to work with.
+
+This console library implements the following APIs as to remain in parity with the following document:
+	- https://www.sumologic.com/glossary/log-levels
+
+Simple usage of this library:
+```luau
+Console:Debug("This is a debug message.")
+Console:Info("This is an informational message.")
+Console:Warn("This is a warning!")
+Console:Error("Something went wrong!")
+```
+
+Configuration of this library:
+```luau
+Console:Configure({
+	LogLevel = "Info", -- Only show messages at Info level or higher
+	Timestamps = true, -- Enable timestamps
+	ANSI = true,       -- Enable ANSI colors (requires an ANSI-compatible console)
+	Name = "MyAwesomeScript", -- Custom name for the logger instance
+	Format = "[%*][%*][%*][%*]: %*%*%*" -- Custom format string (see Console.Configure for details)
+})
+
+Console:Debug("This debug message will not appear due to LogLevel configuration.")
+Console:Info("This info message will appear with timestamp and ANSI colors.")
+```
+
+Advanced usage of this library:
+```luau
+Console:Debug("My Part:", workspace.Part)
+Console:Info("Player Position:", game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+Console:Warn("Configuration Table:", { enabled = true, maxAttempts = 5, data = { a = 1, b = "hello" } })
+```
+
+## Properties
+## Methods
+### Stringify
+
+> Console:Stringify() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Will take a value, and return the stringified version of said value.
+
+---
+### Debug
+
+> Console:Debug() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Debug logs are given the numerical value “7.” These logs typically contain information that is only useful
+during the debug phase and may be of little value during production.
+
+---
+### Info
+
+> Console:Info() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Informational logs are given the numerical value “6.” They include information about successful operations
+within the application, such as a successful start, pause, or exit of the application.
+
+---
+### Notice
+
+> Console:Notice() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Notice logs are given the numerical value “5.” They include information about events that may be unusual but
+are not errors. Notice logs are technically normal, but still significant enough to have their own severity
+level between information and warning.
+
+---
+### Warn
+
+> Console:Warn() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Warning logs are given the numerical value “4.” Warning conditions are slightly less severe than error conditions.
+Error conditions happen when an operation fails, while a warning might indicate that an operation will fail in the
+future if action is not taken now.
+
+---
+### Error
+
+> Console:Error() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Error logs are given the numerical value “3.” This category is assigned to event logs that contain an application
+error message.
+
+---
+### Critical
+
+> Console:Critical() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Critical logs are given the numerical value “2.” This category is assigned for critical errors, such as hardware
+failure.
+
+---
+### Alert
+
+> Console:Alert() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Alert logs are given the numerical value “1.” This category is assigned when an event log requires an immediate
+response, such as when a system database becomes corrupted and must be restored to prevent the loss of critical
+data or services.
+
+---
+### Emergency
+
+> Console:Emergency() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Emergency logs are given the numerical value “0”. This category is assigned when an event log indicates that the
+system is completely unusable.
+
+---
+### Configure
+
+> Console:Configure() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Configures the logging behavior specifically for the **calling script**.
+Each script maintains its own configuration, allowing for granular control over its logging output.
+Settings applied here will override any global defaults set by `Console.SetDefaults`.
+
+---
+## Functions
+### setDefaults
+
+> Console.setDefaults() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Establishes the **global default configuration** for the Console logger.
+These defaults apply to all scripts that use the Console package unless a script
+explicitly overrides them using `Console.Configure()`.
+
+---
+### new
+
+> Console.new() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Will instantiate a new console object, this is how you'll communicate with the 
+console library.
+
+---

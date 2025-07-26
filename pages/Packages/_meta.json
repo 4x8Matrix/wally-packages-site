@@ -1,11 +1,4 @@
 {
-  "CameraProfiler": "Camera Profiler",
-  "ClassIndex": "ClassIndex",
-  "Console": "Console",
-  "EmoticonReporter": "Emoticon Reporter",
-  "RGBA": "RGBA",
-  "RobloxControls": "RobloxControls",
-  "Runtime": "Runtime",
-  "State": "State",
-  "Windline": "Windline"
+  "camera_profiler": "CameraProfiler",
+  "console": "Console"
 }

@@ -264,8 +264,7 @@ local function createVirtualMDXs(moonwaveData: moonwaveDataExportArray)
 	}
 
 	for _, moonwaveDataObject in moonwaveData do
-		local classSourceFile = string.split(moonwaveDataObject.source.path, "package-index/Modules/")[2]
-		local classFileSystem = string.split(classSourceFile, "/")
+		local classFileSystem = string.split(moonwaveDataObject.source.path, "/")
 
 		local className = moonwaveDataObject.name
 		local classDescription = moonwaveDataObject.desc
@@ -397,7 +396,7 @@ local function updateIndexPage(fileTree: compiledFileTree)
 			end
 
 			local filePath = initFileNode.nodeFullName
-			local wallyFilePath = `package-index/Modules/{fileOrFolderNode.nodeName}/wally.toml`
+			local wallyFilePath = `package-index/packages/{fileOrFolderNode.nodeName}/wally.toml`
 			local wallyDetails = serde.decode("toml", fs.readFile(wallyFilePath))
 
 			filePath = string.split(filePath, "/")
@@ -436,16 +435,15 @@ local function main(moonwaveData: moonwaveDataExportArray)
 	updateIndexPage(virtualTree)
 
 	for filePath, jsonContent in metaFilePaths do
-		fs.writeFile(`{filePath}/_meta.json`, net.jsonEncode(jsonContent, true))
+		fs.writeFile(`{filePath}/_meta.json`, serde.encode("json", jsonContent, true))
 	end
 
 	print(`Finished writing Virtual FS`)
 end
 
-local moonwaveExtractResult = process.spawn("moonwave", {
+local moonwaveExtractResult = process.exec("vendor/moonwave-extractor", {
 	"extract",
-	"-b",
-	"package-index/Modules",
+	"package-index/packages",
 })
 
 if not moonwaveExtractResult.ok then

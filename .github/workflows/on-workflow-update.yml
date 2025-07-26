@@ -14,8 +14,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Aftman
-        uses: ok-nick/setup-aftman@v0.4.2
+      - name: Setup Rokit
+        uses: CompeyDev/setup-rokit@v0.1.2
 
       - name: Git Submodule Update
         run: git submodule update --init --remote --recursive --force
@@ -25,7 +25,7 @@ jobs:
 
       - name: Lune build website
         run: |
-          lune moonwave-build
+          lune run moonwave-build
 
       - name: Commit changes
         run: |

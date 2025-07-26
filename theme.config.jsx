@@ -1,5 +1,5 @@
 export default {
-	logo: <span>Package Index</span>,
+	logo: <span>Wally Packages</span>,
 	docsRepositoryBase: "https://github.com/4x8Matrix/Package-Index-Site/tree/master",
 	project: {
 	  link: 'https://github.com/4x8Matrix/Package-Index'

@@ -5,7 +5,7 @@ The Camera Profiler package represents a singleton that you can use to better le
 works through setting `Workspace.CurrentCamera` to the camera the developer wants to see.
 
 Example of how you would create a profile
-```luau
+```lua
 local BlimpCameraProfile = CameraProfiler:Profile({
 	Name = "BlimpCamera"
 })
@@ -28,28 +28,38 @@ return BlimpCameraProfile
 ```
 
 Example of how you would use the newly created profile
-```luau
+```lua
 CameraProfiler:Set("BlimpCamera")
 ```
 
 Example of how you would integrate a Profile with the default Camera Roblox creates.
-```luau
+```lua
 local DefaultCameraProfile = CameraProfiler:Profile({
 	Name = "DefaultCamera"
 }, workspace.CurrentCamera)
 ```
 
 ## Properties
+### CameraStarted
+> CameraProfiler.CameraStarted  :: Signal\<Name: string>
+
+This signal is fired after a camera has started.
+
+### CameraStopped
+> CameraProfiler.CameraStopped  :: Signal\<Name: string>
+
+This signal is fired after a camera has stopped.
+
 ## Methods
 ### Profile
 
-> CameraProfiler:Profile() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+> CameraProfiler:Profile( `profilePrototype` \{ Name: string, Construct: ((self: Profile) -> ())?, Start: ((self: Profile) -> ())?, Stop: ((self: Profile) -> ())?, }, `cameraInstance` Camera? ) ->  Profile 
 
 Call this function to register your camera profile, a camera profile is a Roblox table that wraps around a camera instance, the goal of this table
 	is to make interacting and handling with cameras easier within the engine.
 
 Example:
-```luau
+```lua
 local CameraProfile = CameraProfiler:Profile({
 	Name = "CameraProfile"
 })
@@ -66,7 +76,7 @@ return CameraProfile
 ---
 ### Set
 
-> CameraProfiler:Set() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+> CameraProfiler:Set( `profileName` [string](https://create.roblox.com/docs/en-us/luau/strings) ) ->  () 
 
 Will set what the active camera should be, sideeffects of calling this method are:
 	- Will call the `Stop` lifecycle on the current camera instance.
@@ -76,7 +86,7 @@ Will set what the active camera should be, sideeffects of calling this method ar
 ---
 ### Get
 
-> CameraProfiler:Get() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+> CameraProfiler:Get() ->  [string?](https://create.roblox.com/docs/en-us/luau/strings) 
 
 Will return the name of the currently active camera, or nil.
 

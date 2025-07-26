@@ -119,8 +119,6 @@ local function parseLuauType(luaType)
 	return luaType
 end
 
----------------------------------
-
 local function writeClassHeaderToMdx(className, classDescription, mdxContent)
 	mdxContent ..= `# {className}\n`
 	mdxContent ..= `{classDescription}\n\n`
@@ -145,7 +143,7 @@ local function writeClassPropertiesToMdx(className, classProperties, mdxContent)
 
 	for _, property: moonwavePropertyData in classProperties do
 		mdxContent ..= `### {parsePropertyHeader(property)}\n`
-		mdxContent ..= `> {className}.{property.name} \\<{getPropertyType(property)}>\n\n`
+		mdxContent ..= `> {className}.{property.name} \ :: {getPropertyType(property)}\n\n`
 		mdxContent ..= `{property.desc}\n\n`
 	end
 
@@ -378,18 +376,18 @@ local function updateIndexPage(fileTree: compiledFileTree)
 	end
 
 	local indexMdxContent =
-		"# Welcome 👋\n\nThis documentation site was generated to help provide developers with documentation for the various packages I [*(AsynchronousMatrix)*](https://github.com/4x8Matrix) develop in my free time."
+		"# Welcome 👋\n\nThis documentation exists to cover the various packages that I may write in my free time. \n\n Any and all packages seen here are for the **Roblox platform**, and can be downloaded either through *Wally* or the *Binaries* provided on GitHub."
 
 	indexMdxContent ..= `\n\n## Installation\n\n`
 
 	indexMdxContent ..= `### Wally\n\n`
-	indexMdxContent ..= `All packages are managed through Wally, the Roblox package manager.\n\n`
-	indexMdxContent ..= `| package | dependency | description |`
+	indexMdxContent ..= `All packages can be downloaded through the wally package manager, here's a generated list of packages this documentation covers.\n\n`
+	indexMdxContent ..= `| name | dependency | description |`
 	indexMdxContent ..= `\n| :----- | :----: | ----: |`
 
 	for _, fileOrFolderNode in fileTree.nodeChildren do
 		if fileOrFolderNode.nodeType == "FOLDER" then
-			local initFileNode: compiledFileNode = fileOrFolderNode.nodeChildren["init.lua"]
+			local initFileNode: compiledFileNode = fileOrFolderNode.nodeChildren["init.luau"]
 
 			if not initFileNode then
 				continue
@@ -403,14 +401,46 @@ local function updateIndexPage(fileTree: compiledFileTree)
 			table.remove(filePath, #filePath)
 			filePath = table.concat(filePath, "/")
 
-			indexMdxContent ..= `\n| [{fileOrFolderNode.nodeName}](Packages/{filePath}) | \`\`\`{fileOrFolderNode.nodeName} = "{wallyDetails.package.name}@{wallyDetails.package.version}"\`\`\` | {wallyDetails.package.description} |`
+			indexMdxContent ..= `\n| [{fileOrFolderNode.nodeName}](Packages/{filePath}) | \`\`\`{fileOrFolderNode.nodeName} = "{wallyDetails.package.name}@{wallyDetails.package.version}"\`\`\` | {wallyDetails.package.description or "No description provided."} |`
 		end
 	end
 
 	indexMdxContent ..= `\n\n### Binaries\n\n`
-	indexMdxContent ..= `If wally isn't a viable option in your codebase, you can alternativly download any of the above packages through the 'Binaries' folder on the GitHub repository;`
-	indexMdxContent ..= `\n\nhttps://github.com/4x8Matrix/Package-Index/tree/Master/Binaries`
-	indexMdxContent ..= `\n\nThese binaries are exported as *rbxm* files, so you'll need to import them into studio through the 'Insert from File' context action, or by dragging and dropping them into the place!`
+	indexMdxContent ..= `As an alternative to wally, you can use these binaries to pull the code in without needing a package manager`
+	
+	indexMdxContent ..= `\n| name | download |`
+	indexMdxContent ..= `\n| :----- | ----: |`
+
+	for _, fileOrFolderNode in fileTree.nodeChildren do
+		if fileOrFolderNode.nodeType == "FOLDER" then
+			local initFileNode: compiledFileNode = fileOrFolderNode.nodeChildren["init.luau"]
+
+			if not initFileNode then
+				continue
+			end
+
+			local filePath = initFileNode.nodeFullName
+
+			filePath = string.split(filePath, "/")
+			table.remove(filePath, #filePath)
+			filePath = table.concat(filePath, "/")
+
+			indexMdxContent ..= `\n| [{fileOrFolderNode.nodeName}](Packages/{filePath}) | [direct download](https://github.com/4x8Matrix/wally-packages/tree/master/binaries/{fileOrFolderNode.nodeName}.rbxm) |`
+		end
+	end
+	
+	indexMdxContent ..= "\n\n---\n\n*If you'd rather download them through GitHub, you can find the link to these binaries [here!](https://github.com/4x8Matrix/wally-packages/tree/master/binaries)*"
+
+	indexMdxContent ..= `\n\n## Reuploads\n\n`
+
+	indexMdxContent ..= `This documentation also covers *reuploads/forks* of community packages that I have pushed to Wally.`
+	indexMdxContent ..= `\n\n I hope to of given the proper credit to the developers who have created the resources mentioned here, and I aim to stay within the license agreements for any packages I do publish.`
+	indexMdxContent ..= "\n\n---\n\n*If you're a developer -- and you'd like me to take a package down, please contact me on Discord! I am happy to oblige.*"
+
+	indexMdxContent ..= `\n\n## Deprecated\n\n`
+
+	indexMdxContent ..= `Some of these packages have been deprecated, deprecated packages will also have their own section in this documentation`
+
 
 	fs.writeFile("pages/index.mdx", indexMdxContent)
 end

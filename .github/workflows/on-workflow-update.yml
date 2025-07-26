@@ -20,6 +20,9 @@ jobs:
       - name: Git Submodule Update
         run: git submodule update --init --remote --recursive --force
 
+      - name: Checkout SHA
+        run: cd package-index && git checkout '${{ github.event.client_payload.sha }}'
+
       - name: Lune build website
         run: |
           lune moonwave-build

@@ -1,0 +1,3 @@
+[submodule "package-index"]
+	path = package-index
+	url = https://github.com/4x8Matrix/Package-Index.git

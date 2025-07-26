@@ -1,0 +1,115 @@
+import { Callout } from 'nextra/components'
+
+# Emoticon Reporter
+A simple alternative to the default Roblox `TestEz` reporter, this Reporter attempts to bundle in a few quality of life things to help make testing your code easier.
+
+Emoji definitions:
+- 🟣 - *Unknown Test Status*
+- 🟢 - *Successful Test Status*
+- 🔴 - *Failed Test Status*
+- 🟡 - *Skipped Test Status*
+
+## Properties
+## Methods
+### ToString
+
+> Emoticon Reporter:ToString() ->  [string](https://create.roblox.com/docs/en-us/luau/strings) 
+
+Returns a prettified string version of the state table.
+
+```lua
+	local Reporter = EmoticonReporter.new()
+
+	print(tostring(Reporter)) -- EmoticonReporter<Status: idle>
+```
+
+---
+### StripErrorMessage
+
+> Emoticon Reporter:StripErrorMessage( `stacktrace` [string](https://create.roblox.com/docs/en-us/luau/strings) ) ->  [string](https://create.roblox.com/docs/en-us/luau/strings) 
+
+Strips away common `testez` lines that can often obscure the stack trace
+
+---
+### StripErrors
+
+> Emoticon Reporter:StripErrors( `errorArray` [\{ string }](https://create.roblox.com/docs/en-us/luau/strings) ) ->  [\{ string }](https://create.roblox.com/docs/en-us/luau/strings) 
+
+QoL call that loops through an array and calls `:StripErrorMessage`
+
+---
+### SerialiseNode
+
+> Emoticon Reporter:SerialiseNode( `testEzNode` \{ ... } ) ->  [string](https://create.roblox.com/docs/en-us/luau/strings) 
+
+Primary method used to parse and compute testez result nodes, this function is recursive and will parse children of the passed in testez node.
+
+---
+### SortDescendants
+
+> Emoticon Reporter:SortDescendants( `children` \{ testEzNode } ) ->  \{ testEzNode } 
+
+Sorts the TestEz nodes so that we show any failed tests first instead of having to scroll to find what tests failed.
+
+---
+### SerialiseHeadNode
+
+> Emoticon Reporter:SerialiseHeadNode( `testEzNode` \{ ... } ) ->  [string](https://create.roblox.com/docs/en-us/luau/strings) 
+
+Primary method used to parse the testez head node, this function will then call `:SerialiseNode` to parse child nodes.
+
+---
+### ParseReport
+
+> Emoticon Reporter:ParseReport( `testEzNode` \{ ... } ) -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Called by the TestEz library, used to parse test results.
+
+---
+### Print
+
+> Emoticon Reporter:Print() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Display the results of a test in the output, the Reporter won't display these results when TestEz reports the finished test, instead the developer will need to call this method to see the status of the test.
+
+---
+### SetErrorsTruncated
+
+> Emoticon Reporter:SetErrorsTruncated( `state` [boolean](https://create.roblox.com/docs/en-us/luau/booleans) ) -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Disable/Enable the ability for EmoticonReporter to strip away TestEz error messages
+
+---
+### SetMaxScope
+
+> Emoticon Reporter:SetMaxScope( `value` [number](https://create.roblox.com/docs/en-us/luau/numbers) ) -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Set the max scope for the Reporter to show, anything past the `value` passed in will be marked off as "Maximum node depth reached"
+
+---
+### SetIsSorted
+
+> Emoticon Reporter:SetIsSorted( `value` [number](https://create.roblox.com/docs/en-us/luau/numbers) ) -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Enable/Disable reporter sorting for the TestEz output.
+
+---
+## Functions
+### new
+
+> Emoticon Reporter.new() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Construct a new `EmoticonReporter` object
+
+```lua
+	local EmoticonReporter = require(ReplicatedStorage.DevPackages.EmoticonReporter)
+	local Reporter = EmoticonReporter.new()
+
+	TestEz.TestBootstrap:run({
+		ServerScriptService.Modules,
+	}, Reporter)
+
+	Reporter:Print()
+```
+
+---

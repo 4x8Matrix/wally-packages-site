@@ -1,0 +1,18 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "[🚀 - PNPM]: Start the development website",
+			"type": "shell",
+			"command": "pnpm run dev",
+			"group": { "kind": "build" }
+		},
+
+		{
+			"label": "[🚀 - Lune]: Build the development pages",
+			"type": "shell",
+			"command": "lune moonwave-build",
+			"group": { "kind": "build" }
+		}
+	]
+}

@@ -1,0 +1,45 @@
+import { Callout } from 'nextra/components'
+
+# Camera Profiler
+The Camera Profiler is a singleton responsible for handling what camera is active, what cameras are not active and the primary entrypoint for activating different camera objects.
+
+## Properties
+### Camera
+> Camera Profiler.Camera \<[CameraObject](/Packages/CameraProfiler/Camera)>
+
+
+
+### CameraActivated
+> Camera Profiler.CameraActivated \<[RBXScriptSignal](https://create.roblox.com/docs/en-us/reference/engine/datatypes/RBXScriptSignal)>
+
+
+
+### CameraDeactivated
+> Camera Profiler.CameraDeactivated \<[RBXScriptSignal](https://create.roblox.com/docs/en-us/reference/engine/datatypes/RBXScriptSignal)>
+
+
+
+## Methods
+### GetActiveCamera
+
+> Camera Profiler:GetActiveCamera() ->  [string](https://create.roblox.com/docs/en-us/luau/strings) 
+
+Get the active camera instance, this'll return a string that represents a camera object.
+
+```lua
+	local activeCamera = CameraProfile:GetActiveCamera()
+```
+
+---
+### SetActiveCamera
+
+> Camera Profiler:SetActiveCamera( `cameraName` [string](https://create.roblox.com/docs/en-us/luau/strings) ) ->  [string](https://create.roblox.com/docs/en-us/luau/strings) 
+
+Set the active camera instance, this'll invoke a few lifecycle methods as well as swap out the current camera for the requested camera if found.
+
+```lua
+	CameraProfile:SetActiveCamera("Example")
+```
+
+---
+## Functions

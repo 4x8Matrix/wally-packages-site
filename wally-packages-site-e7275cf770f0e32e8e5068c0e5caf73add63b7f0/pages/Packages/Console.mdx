@@ -1,0 +1,309 @@
+import { Callout } from 'nextra/components'
+
+# Console
+A package that helps to organise the Roblox output, primarily offering developers quality of life features over the default Roblox output behaviour.
+
+## Properties
+### id
+> Console.id \<[string](https://create.roblox.com/docs/en-us/luau/strings)>
+
+
+
+### level
+> Console.level \<[number](https://create.roblox.com/docs/en-us/luau/numbers)>
+
+
+
+### schema
+> Console.schema \<[string](https://create.roblox.com/docs/en-us/luau/strings)>
+
+
+
+### enabled
+> Console.enabled \<[boolean](https://create.roblox.com/docs/en-us/luau/booleans)>
+
+
+
+### logs
+> Console.logs \<\{ }>
+
+
+
+## Methods
+### Assert
+
+> Console:Assert( `condition` [boolean?](https://create.roblox.com/docs/en-us/luau/booleans), `message` ... ) -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Assertions, however written through our Console, if the condition isn't met, the Console will call :error on itself with the given message.
+
+```lua
+	local Console = Console.new("Console")
+
+	Console:Assert(1 == 1, "Hello, World!") -- > will output: nothing
+	Console:Assert(1 == 2, "Hello, World!") -- > will output: [Console][error]: "Hello, World!" <stack attached>
+```
+
+---
+### Critical
+
+> Console:Critical( `message` ... ) -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Create a new log for 'critical', critical being deployed in a situation where something has gone terribly wrong.
+
+```lua
+	local Console = Console.new("Console")
+
+	Console:Critical("Hello, World!") -- > will output: [Console][critical]: "Hello, World!" <stack attached>
+```
+
+---
+### Error
+
+> Console:Error( `message` ... ) -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Create a new log for 'error', this is for errors raised through a developers code on purpose.
+
+```lua
+	local Console = Console.new("Console")
+
+	Console:Error("Hello, World!") -- > will output: [Console][error]: "Hello, World!" <stack attached>
+```
+
+---
+### Warn
+
+> Console:Warn( `message` ... ) -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Create a new log for 'warn', this is for informing developers about something which takes precedence over a log
+
+```lua
+	local Console = Console.new("Console")
+
+	Console:Warn("Hello, World!") -- > will output: [Console][warn]: "Hello, World!"
+```
+
+---
+### Log
+
+> Console:Log( `message` ... ) -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Create a new log for 'log', this is for general logging - ideally what we would use in-place of print.
+
+```lua
+	local Console = Console.new("Console")
+
+	Console:Log("Hello, World!") -- > will output: [Console][log]: "Hello, World!"
+```
+
+---
+### Debug
+
+> Console:Debug( `message` ... ) -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Create a new log for 'debug', typically we should only use 'debug' when debugging code or leaving hints for developers.
+
+```lua
+	local Console = Console.new("Console")
+
+	Console:Debug("Hello, World!") -- > will output: [Console][debug]: "Hello, World!"
+```
+
+---
+### SetLogLevel
+
+> Console:SetLogLevel( `logLevel` [number](https://create.roblox.com/docs/en-us/luau/numbers) ) -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Set an log level for this Console, log levels assigned per Console override the global log level.
+
+LogLevels that are by default set in `Console`:
+
+- 1 = Debug
+- 2 = Log
+- 3 = Warn
+- 4 = Error
+- 5 = Critical
+
+<Callout emoji="ℹ️">
+	As an alternative, Console provides a `LogLevel` enum, you can access this enum like: `Console.LogLevel.Debug`
+</Callout>
+
+```lua
+	local Console = ConsoleModule.new("Console")
+
+	ConsoleModule.setGlobalLogLevel(Console.LogLevel.Warn)
+
+	Console:Log("Hello, World!") -- this will NOT output anything
+	Console:Warn("Hello, World!") -- this will output something
+
+	Console:SetLogLevel(Console.LogLevel.Log)
+
+	Console:Log("Hello, World!") -- this will output something
+	Console:Warn("Hello, World!") -- this will output something
+```
+
+---
+### SetTracebackEnabled
+
+> Console:SetTracebackEnabled( `traceback` [boolean](https://create.roblox.com/docs/en-us/luau/booleans) ) -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Enable/Disable traceback logging for the 'Console' object
+
+```lua
+	local reporter = Console.new("🔥 CoolReporter")
+
+	reporter:SetTracebackEnabled(true)
+	reporter:Log("Hello, World") --[[
+		["🔥 CoolReporter"]["log"]: "Hello, World"
+		["🔥 CoolReporter"]["traceback"]: begin
+		Script 'ServerScriptService.Place.Services.GameLoopService', Line 30 - function OnGameStateBlocking
+		Script 'ServerScriptService.Place.Services.GameLoopService', Line 48
+		Script 'ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal', Line 56 - function acquireRunnerThreadAndCallEventHandler
+		Script 'ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal', Line 67 - function runEventHandlerInFreeThread
+		["🔥 CoolReporter"]["traceback"]: end
+	]]
+```
+
+---
+### SetState
+
+> Console:SetState( `state:` [boolean](https://create.roblox.com/docs/en-us/luau/booleans) ) -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Sets the state of the Console, state depicts if the Console can log messages into the output.
+
+```lua
+	local Console = Console.new("Console")
+
+	Console:Log("Hello, World!") -- > will output: [Console][log]: "Hello, World!"
+	Console:SetState(false)
+	Console:Log("Hello, World!") -- > will output: nothing
+```
+
+---
+### FetchLogs
+
+> Console:FetchLogs( `count:` [number?](https://create.roblox.com/docs/en-us/luau/numbers) ) ->  \{ [number]: \{ logType: string, message: string, logId: string } } 
+
+Fetch an array of logs generated through this Console
+
+```lua
+	local Console = Console.new("Console")
+
+	Console:Log("Hello, World!") -- > [Console][log]: "Hello, World!"
+	Console:FetchLogs() -- > [[
+		{
+			logType = "log",
+			message = "[Console][log]: \"Hello, World!\"",
+			logId = "Console"
+		}
+	]]--
+```
+
+---
+### ToString
+
+> Console:ToString() ->  [string](https://create.roblox.com/docs/en-us/luau/strings) 
+
+Returns a prettified string version of the Console table.
+
+```lua
+	local Value = State.new(0)
+
+	print(tostring(Value)) -- Value<0>
+```
+
+---
+## Functions
+### setGlobalLogLevel
+
+> Console.setGlobalLogLevel( `logLevel` [number](https://create.roblox.com/docs/en-us/luau/numbers) ) -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Set the global log level for all Consoles, a log level is the priority of a log, priorities are represented by a number.
+
+LogLevels that are by default set in `Console`:
+
+- 1 = Debug
+- 2 = Log
+- 3 = Warn
+- 4 = Error
+- 5 = Critical
+
+<Callout emoji="ℹ️">
+	As an alternative, Console provides a `LogLevel` enum, you can access this enum like: `Console.LogLevel.Debug`
+</Callout>
+
+```lua
+	Console.setGlobalLogLevel(Console.LogLevel.Warn)
+
+	Console:log("Hello, World!") -- this will NOT output anything
+	Console:warn("Hello, World!") -- this will output something
+```
+
+---
+### setGlobalSchema
+
+> Console.setGlobalSchema( `schema` [string](https://create.roblox.com/docs/en-us/luau/strings) ) -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Set the global schema for all Consoles, a schema is how the log is displayed in the console.
+
+```lua
+	Console.setGlobalSchema("[%s][%s]: %s")
+
+	Console:log("Hello, World!") -- > [<ReporterName>][log]: Hello, World!
+```
+
+---
+### get
+
+> Console.get( `logId` [string](https://create.roblox.com/docs/en-us/luau/strings) ) ->  Console? 
+
+Fetch a `Console` object through it's given `logId`
+
+```lua
+	Console.get("Console"):log("Hello, World!") -- > [Console][log]: "Hello, World!"
+```
+
+---
+### new
+
+> Console.new( `logId` [string?](https://create.roblox.com/docs/en-us/luau/strings), `schema` [string?](https://create.roblox.com/docs/en-us/luau/strings) ) ->  Console 
+
+Constructor to generate a `Console` prototype
+
+```lua
+	Console.new("Example"):log("Hello, World!") -- > [Example][log]: "Hello, World!"
+```
+
+---
+### newOrphaned
+
+> Console.newOrphaned( `logId` [string?](https://create.roblox.com/docs/en-us/luau/strings), `schema` [string?](https://create.roblox.com/docs/en-us/luau/strings) ) ->  Console 
+
+Constructor to generate an orphaned `Console` prototype, orphaned in this case meaning a console object that the Console library will
+	not track or monitor, thus any global console updates will not be applied to this console object.
+
+This should be used when using `Console` in a library so that any game `Consoles` are isolated from the libraries `Consoles`
+
+```lua
+	Console.newOrphaned("Example"):log("Hello, World!") -- > [Example][log]: "Hello, World!"
+```
+
+<Callout emoji="⚠️"> 
+Only avaliable in version **2.0.4** and above
+ </Callout>
+
+---
+### is
+
+> Console.is( `object` Console? ) ->  [boolean](https://create.roblox.com/docs/en-us/luau/booleans) 
+
+Validate if an object is a 'Console' object
+
+```lua
+	local object = Console.new("Test")
+
+	if Console.is(object) then
+		...
+	end
+```
+
+---

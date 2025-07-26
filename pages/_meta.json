@@ -1,3 +1,6 @@
 {
-	"index": "Home"
+	"index": "Home",
+	"Packages": "Packages",
+	"Reupload": "Reuploads",
+	"Deprecated": "Deprecated"
 }

@@ -1,0 +1,70 @@
+import { Callout } from 'nextra/components'
+
+# Windline
+Windline is a simple module to help create streaks of wind in a Roblox experience, this module was NOT created by me! This is a package that was created
+	by Boatbomber! ( boatbomber - https://boatbomber.com )
+
+I have made small QoL adjustments and uploaded this module to Wally since there's not a version already avaliable.
+
+## Properties
+## Methods
+### Init
+
+> Windline:Init( `settings` \{ Lifetime: number?, Direction: Vector3?, Speed: number?, SpawnRate: number? } ) -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+The initiation function that'll enable the Windlines module to spawn 3d windlines/streaks \<SpawnRate> times a minute.
+
+- Lifetime is set to 3 by default
+- Direction is set to `workspace.GlobalWind` by default
+- Speed is set to 6 by default
+- SpawnRate is set to 25 by default
+
+```lua
+	local Windline = require(ReplicatedStorage.Packages.Windline)
+	
+	Windline:Init({
+		Lifetime = 3,
+		Direction = workspace.GlobalWind,
+		Speed = 6,
+		SpawnRate = 25,
+	})
+```
+
+---
+### Cleanup
+
+> Windline:Cleanup( `settings` \{ Lifetime: number?, Direction: Vector3?, Speed: number?, SpawnRate: number? } ) -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Cleanup all existing windline/streaks as well as flush the internal update queue.
+
+```lua
+	local Windline = require(ReplicatedStorage.Packages.Windline)
+	
+	Windline:Cleanup()
+```
+
+---
+### Create
+
+> Windline:Create( `settings` \{ Lifetime: number?, Direction: Vector3?, Speed: number?, Position: Vector3?, } ) -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Create a new wind streak, the 'settings' table passed defines the scope of this streak/line
+
+- Lifetime by default is set to what the `:Init` function settings has.
+- Direction by default is set to what the `:Init` function settings has.
+- Speed by default is set to what the `:Init` function settings has.
+- Position by default is set to a randomized point around the players camera.
+
+```lua
+	local Windline = require(ReplicatedStorage.Packages.Windline)
+	
+	Windline:Create({
+		Lifetime = 3,
+		Direction = workspace.GlobalWind,
+		Speed = 6,
+		Position = workspace.Object.Position,
+	})
+```
+
+---
+## Functions

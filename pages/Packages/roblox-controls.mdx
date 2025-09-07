@@ -1,0 +1,149 @@
+import { Callout } from 'nextra/components'
+
+# RobloxControls
+RobloxControls is a package that wraps around Roblox CoreGui and Core actions, in the hopes of reducing boilerplate
+code and improving the interaction between Roblox v Developer.
+
+When this module is required, it will by default disable Respawning, this module implements it's own Respawn loop.
+
+## Properties
+## Methods
+### SetCoreAsync
+
+> RobloxControls:SetCoreAsync() ->  promise 
+
+Wraps a `:SetCore` call into a promise, will attempt to keep calling `:SetCore` if the initial request failed.
+
+This method is useful to combat Core actions being called, before Roblox has registered them:
+
+> SetCore: ResetButtonCallback has not been registered by the CoreScripts
+
+```lua
+	RobloxControls:SetCoreAsync("SendNotification", {
+		Title = "Example Core Notification",
+		Text = "Hello, World!"
+	})
+```
+
+---
+### GetCoreAsync
+
+> RobloxControls:GetCoreAsync() ->  promise 
+
+Wraps a `:GetCore` call into a promise, will attempt to keep calling `:GetCore` if the initial request failed.
+
+This method is useful to combat Core actions being called, before Roblox has registered them:
+
+> GetCore: ResetButtonCallback has not been registered by the CoreScripts
+
+```lua
+	local isDevConsoleVisible = RobloxControls:GetCoreAsync("DevConsoleVisible"):expect()
+```
+
+---
+### SetRespawnCallback
+
+> RobloxControls:SetRespawnCallback() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Set the respawn callback, this callback will be invoked when the player resets their character through the roblox Core UI.
+
+```lua
+	RobloxControls:SetRespawnCallback(function()
+		print("Local-Player has tried to reset their character!")
+	end)
+```
+
+---
+### DisableRespawning
+
+> RobloxControls:DisableRespawning() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Convenience method for disabling respawning
+
+```lua
+	RobloxControls:DisableRespawning()
+```
+
+---
+### DisableRespawning
+
+> RobloxControls:DisableRespawning() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Convenience method for enabling respawning
+
+```lua
+	RobloxControls:DisableRespawning()
+```
+
+---
+### SetDefaultCoreGui
+
+> RobloxControls:SetDefaultCoreGui() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Enables a developer to specify specific Core Gui elements that will be rendered in the current place.
+
+Any elements that are NOT passed into this function, will be disabled, and should remain disabled.
+
+```lua
+	RobloxControls:SetDefaultCoreGui(
+		Enum.CoreGuiType.Chat -- the current game will ONLY support the Chat Core UI
+	)
+```
+
+---
+### EnableCoreGui
+
+> RobloxControls:EnableCoreGui() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Enables the CoreGui specified through the `:SetDefaultCoreGui` method.
+
+```lua
+	RobloxControls:EnableCoreGui()
+```
+
+---
+### EnableCoreGui
+
+> RobloxControls:EnableCoreGui() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Disables the CoreGui specified through the `:SetDefaultCoreGui` method.
+
+```lua
+	RobloxControls:EnableCoreGui()
+```
+
+---
+### DisableCharacterInput
+
+> RobloxControls:DisableCharacterInput() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Disables player-character input.
+
+```lua
+	RobloxControls:DisableCharacterInput()
+```
+
+---
+### DisableCharacterInput
+
+> RobloxControls:DisableCharacterInput() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Enables player-character input.
+
+```lua
+	RobloxControls:EnableCharacterInput()
+```
+
+---
+### OverwriteRespawnLoop
+
+> RobloxControls:OverwriteRespawnLoop() -> [nil](https://create.roblox.com/docs/en-us/luau/nil)
+
+Overwrites the respawn loop for the current experience.
+
+```lua
+  RobloxControls:OverwriteRespawnLoop()
+```
+
+---
+## Functions
